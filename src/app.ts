@@ -1,5 +1,6 @@
 import cors from 'cors';
 import express from 'express';
+import morgan from 'morgan';
 import path from 'path';
 
 import { routerV1 } from '@/routes/router.v1';
@@ -11,7 +12,7 @@ app.use(
     origin: 'http://localhost:3000',
   }),
 );
-
+app.use(morgan('combined'));
 app.use(express.json());
 
 app.use('/', express.static(path.join(__dirname, '..', 'public')));
