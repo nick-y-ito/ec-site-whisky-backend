@@ -1,6 +1,8 @@
 import cors from 'cors';
 import express from 'express';
 
+import { routerV1 } from '@/routes/router.v1';
+
 export const app = express();
 
 app.use(
@@ -11,6 +13,8 @@ app.use(
 
 app.use(express.json());
 
-app.get('/', (_, res) => {
-  res.send('Hello World!');
+app.use('/v1', routerV1);
+
+app.get('/*', (_, res) => {
+  res.status(404).json({ message: 'Not found' });
 });
