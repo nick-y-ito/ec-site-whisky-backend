@@ -1,33 +1,34 @@
+/**
+ * Route handlers that receive HTTP requests and return responses
+ */
 import { Request, Response } from 'express';
 
-import { IItem } from '@/data/items';
 import { isValidUuidV4 } from '@/lib/utils';
-import { ItemsModel } from '@/models/item.model';
+import { Item } from '@/models/item.model';
+import { ItemService } from '@/services/item.service';
 import { isTCategory } from '@/types/item.types';
 
-export class ItemsController {
-  private itemsModel: ItemsModel;
-
-  constructor() {
-    this.itemsModel = new ItemsModel();
-  }
+export class ItemController {
+  constructor(private itemService: ItemService) {}
 
   /**
    * GET /items
    */
-  getItems = async (_: Request, res: Response) => {
+  async getAllItems(_: Request, res: Response) {
     try {
-      const items = await this.itemsModel.getItems();
+      console.log('item.controller.ts - getAllItems - 1');
+      const items = await this.itemService.getAllItems();
+      console.log('item.controller.ts - getAllItems - 2');
       return res.status(200).json(items);
     } catch (err) {
       return res.status(500).json({ message: 'Internal server error' });
     }
-  };
+  }
 
   /**
    * GET /items/:itemId
    */
-  getItem = async (req: Request, res: Response) => {
+  async getItem(req: Request, res: Response) {
     try {
       const itemId = req.params['itemId'];
 
@@ -38,7 +39,7 @@ export class ItemsController {
       if (!isValidUuidV4(itemId)) {
         return res.status(400).json({ message: 'Invalid itemId' });
       }
-      const item = await this.itemsModel.getItem(itemId);
+      const item = await this.itemService.getItem(itemId);
       if (!item) {
         return res.status(404).json({ message: 'Item not found' });
       }
@@ -47,49 +48,42 @@ export class ItemsController {
     } catch (err) {
       return res.status(500).json({ message: 'Internal server error' });
     }
-  };
+  }
 
   /**
    * POST /items
    */
-  createItem = async (req: Request, res: Response) => {
+  async createItem(req: Request, res: Response) {
     try {
-      const item = req.body as Omit<IItem, 'itemId'>;
+      const { name, priceInCent, category, rating, imgPath, description } = req.body as Omit<Item, 'itemId'>;
 
       /* Input validation */
-      if (!item.name) {
+      if (!name) {
         return res.status(400).json({ message: 'Missing name' });
       }
-      if (!item.priceInCent) {
+      if (!priceInCent) {
         return res.status(400).json({ message: 'Missing price' });
       }
-      if (item.category && !isTCategory(item.category)) {
+      if (category && !isTCategory(category)) {
         return res.status(400).json({ message: 'Invalid category' });
       }
 
-      const newItem: Omit<IItem, 'itemId'> = {
-        name: item.name,
-        priceInCent: item.priceInCent,
-        category: item.category ?? undefined,
-        rating: item.rating ?? undefined,
-        imgPath: item.imgPath ?? undefined,
-        description: item.description ?? undefined,
-      };
+      const itemCreate: Omit<Item, 'itemId'> = { name, priceInCent, category, rating, imgPath, description };
 
-      const createdItem = await this.itemsModel.createItem(newItem);
+      const createdItem = await this.itemService.createItem(itemCreate);
       return res.status(201).json(createdItem);
     } catch (err) {
       return res.status(500).json({ message: 'Internal server error' });
     }
-  };
+  }
 
   /**
    * PUT /items/:itemId
    */
-  updateItem = async (req: Request, res: Response) => {
+  async updateItem(req: Request, res: Response) {
     try {
-      const item = req.body as Omit<IItem, 'itemId'>;
       const itemId = req.params['itemId'];
+      const { name, priceInCent, category, rating, imgPath, description } = req.body as Omit<Item, 'itemId'>;
 
       /* Input validation */
       if (!itemId) {
@@ -98,27 +92,19 @@ export class ItemsController {
       if (!isValidUuidV4(itemId)) {
         return res.status(400).json({ message: 'Invalid itemId' });
       }
-      if (!item.name) {
+      if (!name) {
         return res.status(400).json({ message: 'Missing name' });
       }
-      if (!item.priceInCent) {
+      if (!priceInCent) {
         return res.status(400).json({ message: 'Missing price' });
       }
-      if (item.category && !isTCategory(item.category)) {
+      if (category && !isTCategory(category)) {
         return res.status(400).json({ message: 'Invalid category' });
       }
 
-      const newItem: IItem = {
-        itemId,
-        name: item.name,
-        priceInCent: item.priceInCent,
-        category: item.category ?? undefined,
-        rating: item.rating ?? undefined,
-        imgPath: item.imgPath ?? undefined,
-        description: item.description ?? undefined,
-      };
+      const itemUpdate: Omit<Item, 'itemId'> = { name, priceInCent, category, rating, imgPath, description };
 
-      const updatedItem = await this.itemsModel.updateItem(newItem);
+      const updatedItem = await this.itemService.updateItem(itemId as Item['itemId'], itemUpdate);
       if (!updatedItem) {
         return res.status(404).json({ message: 'Item not found' });
       }
@@ -126,12 +112,12 @@ export class ItemsController {
     } catch (err) {
       return res.status(500).json({ message: 'Internal server error' });
     }
-  };
+  }
 
   /**
    * DELETE /items
    */
-  deleteItem = async (req: Request, res: Response) => {
+  async deleteItem(req: Request, res: Response) {
     try {
       const itemId = req.params['itemId'];
 
@@ -143,7 +129,7 @@ export class ItemsController {
         return res.status(400).json({ message: 'Invalid itemId' });
       }
 
-      const result = await this.itemsModel.deleteItem(itemId);
+      const result = await this.itemService.deleteItem(itemId);
       if (!result) {
         return res.status(404).json({ message: 'Item not found' });
       }
@@ -151,5 +137,5 @@ export class ItemsController {
     } catch (err) {
       return res.status(500).json({ message: 'Internal server error' });
     }
-  };
+  }
 }

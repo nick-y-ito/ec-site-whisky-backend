@@ -1,13 +1,16 @@
 import express from 'express';
 
-import { ItemsController } from '@/controllers/item.controller';
+import { ItemController } from '@/controllers/item.controller';
+import { ItemRepository } from '@/repositories/item.repository';
+import { ItemService } from '@/services/item.service';
 
-export const itemsRouter = express.Router();
+export const itemRouter = express.Router();
 
-const itemsController = new ItemsController();
+// Dependency injection
+const itemController = new ItemController(new ItemService(new ItemRepository()));
 
-itemsRouter.get('/', itemsController.getItems);
-itemsRouter.post('/', itemsController.createItem);
-itemsRouter.get('/:itemId', itemsController.getItem);
-itemsRouter.put('/:itemId', itemsController.updateItem);
-itemsRouter.delete('/:itemId', itemsController.deleteItem);
+itemRouter.get('/', itemController.getAllItems.bind(itemController));
+itemRouter.get('/:itemId', itemController.getItem.bind(itemController));
+itemRouter.post('/', itemController.createItem.bind(itemController));
+itemRouter.put('/:itemId', itemController.updateItem.bind(itemController));
+itemRouter.delete('/:itemId', itemController.deleteItem.bind(itemController));

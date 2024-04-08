@@ -1,16 +1,6 @@
-import type { TCategory } from '@/types/item.types';
+import { Item } from '@/models/item.model';
 
-export interface IItem {
-  itemId: string; // UUID v4
-  name: string;
-  priceInCent: number;
-  category?: TCategory;
-  rating?: number;
-  imgPath?: string;
-  description?: string;
-}
-
-export const items: IItem[] = [
+export const items: Item[] = [
   {
     itemId: 'b4af6c60-2d89-478a-8ec7-42e88ebd3e7a',
     name: 'ABERFELDY - 12 YEAR OLD',

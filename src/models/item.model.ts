@@ -1,66 +1,24 @@
-import { v4 as uuidv4 } from 'uuid';
+/**
+ * Data model
+ */
+import { TCategory } from '@/types/item.types';
 
-import { IItem, items } from '@/data/items';
+export class Item {
+  public itemId: string; // UUID v4
+  public name: string;
+  public priceInCent: number;
+  public category?: TCategory;
+  public rating?: number;
+  public imgPath?: string;
+  public description?: string;
 
-export class ItemsModel {
-  /**
-   * Gets all items from the items array
-   *
-   * @returns All items
-   */
-  getItems = async () => {
-    return items;
-  };
-
-  /**
-   * Gets an item from the items array
-   *
-   * @param itemId - The id of the item to get
-   * @returns The item if found, otherwise null
-   */
-  getItem = async (itemId: IItem['itemId']): Promise<IItem | null> => {
-    return items.find((item) => item.itemId === itemId) ?? null;
-  };
-
-  /**
-   * Creates a new item and adds it to the items array
-   *
-   * @param item - The item to create
-   * @returns The created item
-   */
-  createItem = async (item: Omit<IItem, 'itemId'>) => {
-    const newItem: IItem = Object.assign(item, { itemId: uuidv4() });
-    items.push(newItem);
-    return newItem;
-  };
-
-  /**
-   * Updates an item in the items array
-   *
-   * @param item - The item to update
-   * @returns The updated item if the item was found, otherwise null
-   */
-  updateItem = async (item: IItem): Promise<IItem | null> => {
-    const itemIndex = items.findIndex((i) => i.itemId === item.itemId);
-    if (itemIndex === -1) {
-      return null;
-    }
-    items[itemIndex] = item;
-    return item;
-  };
-
-  /**
-   * Deletes an item from the items array
-   *
-   * @param itemId - The id of the item to delete
-   * @returns True if the item was deleted, false if the item was not found
-   */
-  deleteItem = async (itemId: IItem['itemId']): Promise<boolean> => {
-    const itemIndex = items.findIndex((item) => item.itemId === itemId);
-    if (itemIndex === -1) {
-      return false;
-    }
-    items.splice(itemIndex, 1);
-    return true;
-  };
+  constructor({ itemId, name, priceInCent, category, rating, imgPath, description }: Item) {
+    this.itemId = itemId;
+    this.name = name;
+    this.priceInCent = priceInCent;
+    this.category = category;
+    this.rating = rating;
+    this.imgPath = imgPath;
+    this.description = description;
+  }
 }
