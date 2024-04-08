@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { ItemsController } from '@/routes/items/items.controller';
+import { ItemsController } from '@/controllers/item.controller';
 
 export const itemsRouter = express.Router();
 

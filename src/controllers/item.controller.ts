@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 
 import { IItem } from '@/data/items';
 import { isValidUuidV4 } from '@/lib/utils';
-import { ItemsModel } from '@/models/items.model';
+import { ItemsModel } from '@/models/item.model';
 import { isTCategory } from '@/types/item.types';
 
 export class ItemsController {
