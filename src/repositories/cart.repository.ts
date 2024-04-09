@@ -1,20 +1,20 @@
-import { cart } from '@/data/cart';
+import { carts } from '@/data/cart';
 import { Cart, ICartItem } from '@/models/cart.model';
 import { Item } from '@/models/item.model';
 import { User } from '@/models/user.model';
 
 export class CartRepository {
-  private cart: Cart[];
+  private carts: Cart[];
 
   constructor() {
-    this.cart = cart;
+    this.carts = carts;
   }
 
   getCartByUserId(userId: User['userId']): Cart {
-    let userCart = this.cart.find((cart) => cart.userId === userId);
+    let userCart = this.carts.find((cart) => cart.userId === userId);
     if (!userCart) {
       userCart = new Cart(userId);
-      this.cart.push(userCart);
+      this.carts.push(userCart);
     }
     return userCart;
   }
@@ -26,6 +26,7 @@ export class CartRepository {
       throw new Error('Item already exists in cart');
     } else {
       cart.items.push(cartItem);
+      this.updateTotalPrice(cart);
     }
   }
 
@@ -36,6 +37,7 @@ export class CartRepository {
       throw new Error('Item not found in cart');
     }
     cart.items[itemIndex]!.quantity = quantity;
+    this.updateTotalPrice(cart);
   }
 
   removeItemFromCart(userId: User['userId'], itemId: Item['itemId']): void {
@@ -46,5 +48,10 @@ export class CartRepository {
     } else {
       throw new Error('Item not found in cart');
     }
+    this.updateTotalPrice(cart);
+  }
+
+  private updateTotalPrice(cart: Cart): void {
+    cart.totalPriceInCent = cart.items.reduce((total, item) => total + item.priceInCent * item.quantity, 0);
   }
 }
