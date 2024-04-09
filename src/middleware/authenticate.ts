@@ -3,7 +3,7 @@ import { NextFunction, Request, Response } from 'express';
 import { users } from '@/data/users';
 
 export const authenticate = (req: Request, res: Response, next: NextFunction) => {
-  const userId = req.headers['x-userid'];
+  const userId = req.headers['x-user-id'];
 
   if (!userId) {
     return res.status(401).send('Authentication header missing');
