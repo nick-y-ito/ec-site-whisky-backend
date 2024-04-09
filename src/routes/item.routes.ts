@@ -6,8 +6,10 @@ import { ItemService } from '@/services/item.service';
 
 export const itemRouter = express.Router();
 
-// Dependency injection
-const itemController = new ItemController(new ItemService(new ItemRepository()));
+/* Dependency injection */
+const itemRepository = new ItemRepository();
+const itemService = new ItemService(itemRepository);
+const itemController = new ItemController(itemService);
 
 itemRouter.get('/', itemController.getAllItems.bind(itemController));
 itemRouter.get('/:itemId', itemController.getItem.bind(itemController));

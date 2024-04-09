@@ -1,6 +1,8 @@
 /**
  * Data model
  */
+import { v4 as uuidv4 } from 'uuid';
+
 import { TCategory } from '@/types/item.types';
 
 export class Item {
@@ -12,8 +14,8 @@ export class Item {
   public imgPath?: string;
   public description?: string;
 
-  constructor({ itemId, name, priceInCent, category, rating, imgPath, description }: Item) {
-    this.itemId = itemId;
+  constructor({ name, priceInCent, category, rating, imgPath, description }: Omit<Item, 'itemId'>) {
+    this.itemId = uuidv4();
     this.name = name;
     this.priceInCent = priceInCent;
     this.category = category;

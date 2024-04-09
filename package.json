@@ -6,7 +6,7 @@
   "scripts": {
     "prepare": "husky",
     "dev": "nodemon",
-    "start": "ts-node -r tsconfig-paths/register ./src/index.ts"
+    "start": "ts-node --files -r tsconfig-paths/register ./src/index.ts"
   },
   "keywords": [],
   "author": "",

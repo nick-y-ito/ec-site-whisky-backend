@@ -5,7 +5,7 @@ import { items } from '@/data/items';
 import { Item } from '@/models/item.model';
 
 export class ItemRepository {
-  private items: Item[] = []; // This would be replaced by database logic
+  private items: Item[]; // This would be replaced by database logic
 
   constructor() {
     this.items = items;

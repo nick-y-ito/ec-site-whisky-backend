@@ -1,5 +1,8 @@
 import { Item } from '@/models/item.model';
 
+/**
+ * This data would be moved to a database
+ */
 export const items: Item[] = [
   {
     itemId: 'b4af6c60-2d89-478a-8ec7-42e88ebd3e7a',

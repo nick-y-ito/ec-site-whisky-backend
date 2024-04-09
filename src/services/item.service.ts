@@ -1,8 +1,6 @@
 /**
  * Business logic
  */
-import { v4 as uuidv4 } from 'uuid';
-
 import { items } from '@/data/items';
 import { Item } from '@/models/item.model';
 import { ItemRepository } from '@/repositories/item.repository';
@@ -38,7 +36,7 @@ export class ItemService {
    */
   async createItem(itemCreate: Omit<Item, 'itemId'>): Promise<Item> {
     const { name, priceInCent, category, rating, imgPath, description } = itemCreate;
-    const newItem = new Item({ itemId: uuidv4(), name, priceInCent, category, rating, imgPath, description });
+    const newItem = new Item({ name, priceInCent, category, rating, imgPath, description });
     return this.itemRepository.create(newItem);
   }
 
