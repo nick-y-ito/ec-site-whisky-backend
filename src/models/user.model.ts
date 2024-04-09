@@ -1,5 +1,7 @@
+import { UUIDv4 } from '@/types/general.types';
+
 export class User {
-  userId: string; // UUID v4
+  userId: UUIDv4;
 
   constructor(userId: User['userId']) {
     this.userId = userId;

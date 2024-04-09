@@ -2,13 +2,15 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { Item } from '@/models/item.model';
 import { User } from '@/models/user.model';
+import { UUIDv4 } from '@/types/general.types';
 
 export interface ICartItem extends Item {
   quantity: number;
+  totalPriceInCent: Item['priceInCent'];
 }
 
 export class Cart {
-  public cartId: string; // UUID v4
+  public cartId: UUIDv4;
   public userId: User['userId'];
   public items: ICartItem[];
 

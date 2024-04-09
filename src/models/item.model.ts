@@ -3,10 +3,11 @@
  */
 import { v4 as uuidv4 } from 'uuid';
 
+import { UUIDv4 } from '@/types/general.types';
 import { TCategory } from '@/types/item.types';
 
 export class Item {
-  public itemId: string; // UUID v4
+  public itemId: UUIDv4;
   public name: string;
   public priceInCent: number;
   public category?: TCategory;
