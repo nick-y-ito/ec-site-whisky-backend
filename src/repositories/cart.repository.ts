@@ -31,6 +31,9 @@ export class CartRepository {
   }
 
   updateItemQuantity(userId: User['userId'], itemId: Item['itemId'], quantity: ICartItem['quantity']): void {
+    if (quantity === 0) {
+      return this.removeItemFromCart(userId, itemId);
+    }
     const cart = this.getCartByUserId(userId);
     const itemIndex = cart.items.findIndex((item) => item.itemId === itemId);
     if (itemIndex === -1) {
