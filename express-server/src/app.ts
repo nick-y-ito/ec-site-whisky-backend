@@ -1,7 +1,6 @@
 import cors from 'cors';
 import express from 'express';
 import morgan from 'morgan';
-import path from 'path';
 
 import { routerV1 } from '@/routes/router.v1';
 
@@ -15,7 +14,7 @@ app.use(
 app.use(morgan('combined'));
 app.use(express.json());
 
-app.use('/', express.static(path.join(__dirname, '..', 'public')));
+// app.use('/', express.static(path.join(__dirname, '..', 'public')));
 app.use('/v1', routerV1);
 
 app.get('/*', (_, res) => {

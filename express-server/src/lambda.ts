@@ -1,10 +1,10 @@
-// // Example: src/lambda.ts
-// import * as awsServerlessExpress from 'aws-serverless-express';
+import { APIGatewayProxyEvent, Context } from 'aws-lambda';
+import * as awsServerlessExpress from 'aws-serverless-express';
 
-// import { app } from '@/app';
+import { app } from '@/app';
 
-// const server = awsServerlessExpress.createServer(appÍ);
+const server = awsServerlessExpress.createServer(app);
 
-// exports.handler = (event, context) => {
-//   awsServerlessExpress.proxy(server, event, context);
-// };
+export const handler = (event: APIGatewayProxyEvent, context: Context) => {
+  awsServerlessExpress.proxy(server, event, context);
+};

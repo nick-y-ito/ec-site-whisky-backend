@@ -3,3 +3,5 @@ out
 dist
 coverage
 commitlint.config.js
+cdk.out
+cdk.context.json
