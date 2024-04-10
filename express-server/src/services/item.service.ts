@@ -14,7 +14,6 @@ export class ItemService {
    * @returns All items
    */
   async getAllItems(): Promise<Item[]> {
-    console.log('item.service.ts - getAllItems - 1');
     return this.itemRepository.findAll();
   }
 

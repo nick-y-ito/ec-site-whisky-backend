@@ -12,7 +12,6 @@ export class ItemRepository {
   }
 
   async findAll(): Promise<Item[]> {
-    console.log('item.repository.ts - findAll - 1');
     return this.items;
   }
 

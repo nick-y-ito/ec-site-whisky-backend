@@ -16,9 +16,7 @@ export class ItemController {
    */
   async getAllItems(_: Request, res: Response) {
     try {
-      console.log('item.controller.ts - getAllItems - 1');
       const items = await this.itemService.getAllItems();
-      console.log('item.controller.ts - getAllItems - 2');
       return res.status(200).json(items);
     } catch (err) {
       return res.status(500).json({ message: 'Internal server error' });
